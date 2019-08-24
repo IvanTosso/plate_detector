@@ -38,20 +38,20 @@ EXECUTABLE	:= 5kk70-assignment-gpu
 # Cuda source files (compiled with cudacc)
 CUFILES		:= 
 # C/C++ source files (compiled with gcc / c++)
-CCFILES		:= main.cpp histogram-equalization.cpp contrast-enhancement.cpp
+CCFILES		:= main.cpp histogram-equalization.cpp contrast-enhancement.cpp gabor.cpp
 #Output images
 OUTPUT_IMAGES	:= $(wildcard *.ppm) $(wildcard *.pgm)
 CC=g++
-PROGRAM =main
-LDFLAGS:= -lrt
+# LDFLAGS = -std=c++0x
 CFLAGS?=-O2 -g3 
+PROGRAM =main
 OBJECTS:=$(CCFILES:.cpp=.o)
 $(PROGRAM): $(OBJECTS)
 
 .PHONY: clean, run
 
 run: $(PROGRAM)
-	./$<
+	./$<$(LDFLAGS)
 clean: 
 	rm -f $(OBJECTS) $(PROGRAM) $(OUTPUT_IMAGES)
 

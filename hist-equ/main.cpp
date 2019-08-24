@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "hist-equ.h"
 #include <time.h>
+#include "gabor.h"
+
 
 void run_cpu_color_test(PPM_IMG img_in);
 void run_gpu_color_test(PPM_IMG img_in);
@@ -11,21 +13,26 @@ void run_gpu_gray_test(PGM_IMG img_in);
 
 
 int main(){
-    PPM_IMG img_ibuf_c;
+    
+    PGM_IMG img_ibuf_gs;
     time_t start_time;
     time_t  time_difference;
     struct timespec gettime_now;
-
+    
     clock_gettime(CLOCK_REALTIME, &gettime_now);
     start_time = gettime_now.tv_sec;		//Get nS value
     
    
     printf("Running contrast enhancement for color images.\n");
-    img_ibuf_c = read_ppm("testbench_photos/Test1.ppm");
-    run_cpu_color_test(img_ibuf_c);
+    img_ibuf_gs = read_pgm("testbench_photos/plate_grayscale.pgm");/*("testbench_photos/Test1.pgm");*/    
+	run_cpu_gray_test(img_ibuf_gs);
     //TODO: GPU implementation
     //run_gpu_color_test(img_ibuf_c);
-    free_ppm(img_ibuf_c);
+    
+    //GaborFilter gabor;
+    //gabor.Initialize(img_ibuf_gs,img_ibuf_gs,0,3);
+
+    free_pgm(img_ibuf_gs);
     clock_gettime(CLOCK_REALTIME, &gettime_now);
     time_difference = gettime_now.tv_sec - start_time;
     if (time_difference < 0)
@@ -78,8 +85,11 @@ void run_cpu_gray_test(PGM_IMG img_in)
     
     printf("Starting CPU processing...\n");
     
-      img_obuf = contrast_enhancement_g(img_in);
-   
+    img_obuf = contrast_enhancement_g(img_in);
+    GaborFilter gabor;
+    gabor.Initialize(img_obuf,img_obuf,0,3);
+
+
     write_pgm(img_obuf, "out.pgm");
     free_pgm(img_obuf);
 }
