@@ -24,7 +24,8 @@ int main(){
     
    
     printf("Running contrast enhancement for color images.\n");
-    img_ibuf_gs = read_pgm("testbench_photos/plate_grayscale.pgm");/*("testbench_photos/Test1.pgm");*/    
+    img_ibuf_gs = read_pgm("testbench_photos/red_car.pgm"); 
+	    /*plate_grayscale.pgm");("testbench_photos/Test1.pgm");*/    
 	run_cpu_gray_test(img_ibuf_gs);
     //TODO: GPU implementation
     //run_gpu_color_test(img_ibuf_c);
